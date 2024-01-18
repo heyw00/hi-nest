@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Movie } from './entities/movie.entity';
 import { CreateMovieDTO } from './dto/create-movie.dto';
+import { UpdateMovieDTO } from './dto/update-movie.dto';
 
 @Injectable()
 export class MoviesService {
@@ -31,7 +32,7 @@ export class MoviesService {
         })
     }
 
-    update(id:number, updateData) {  //가짜 데이터베이스를 사용하기 때문에 아래와 같이 작성함
+    update(id:number, updateData: UpdateMovieDTO) {  //가짜 데이터베이스를 사용하기 때문에 아래와 같이 작성함
       const movie = this.getOne(id); 
       this.deleteOne(id);
       this.movies.push({...movie, ...updateData}); // 과거의 데이터에 새로운 데이터를 더해서 새로운 movie를 만든다
