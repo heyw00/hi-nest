@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 
@@ -14,6 +14,12 @@ describe('AppController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    // main.ts 설정 추가하기
+    app.useGlobalPipes(new ValidationPipe({  //ValidationPipe : 유효성 검사를 해준다 , npm i class-validator class-transformer
+      whitelist: true, // 데코레이터가 없는 property의 object 를 거른다
+      forbidNonWhitelisted: true,
+      transform: true,
+    }))
     await app.init();
   });
 
@@ -50,3 +56,5 @@ describe('AppController (e2e)', () => {
   }); 
 });
 
+// NestJS는 테스트마다 어플리케이션을 생성한다. 진짜 어플리케이션과는 다르다. 
+// e2e는 trnasformer가 적용되지 않는다. -> 관련 설정을 테스트 어플리케이션에도 추가한다.
